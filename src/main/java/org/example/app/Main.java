@@ -3,6 +3,7 @@ package org.example.app;
 import org.example.model.DirectoryNode;
 import org.example.model.FileNode;
 import org.example.visitor.SearchVisitor;
+import org.example.visitor.StatisticsVisitor;
 import org.example.visitor.TotalSizeVisitor;
 
 import java.util.List;
@@ -15,7 +16,6 @@ public class Main {
         DirectoryNode drafts = new DirectoryNode("drafts");
         DirectoryNode empty = new DirectoryNode("empty");
 
-        // Create files with sizes in bytes.
         FileNode notes = new FileNode("notes.txt", 200);
         FileNode report = new FileNode("report.pdf", 1500);
         FileNode plan = new FileNode("plan.txt", 300);
@@ -40,7 +40,6 @@ public class Main {
         );
 
         SearchVisitor searchVisitor = new SearchVisitor(".txt", 250);
-
         List<String> foundFiles = searchVisitor.search(root);
 
         System.out.println("Search results:");
@@ -48,5 +47,17 @@ public class Main {
         for (String path : foundFiles) {
             System.out.println(path);
         }
+
+        StatisticsVisitor statisticsVisitor = new StatisticsVisitor();
+        statisticsVisitor.analyze(root);
+
+        System.out.println("Statistics:");
+        System.out.println("Files: " + statisticsVisitor.getFileCount());
+        System.out.println(
+                "Directories: " + statisticsVisitor.getDirectoryCount()
+        );
+        System.out.println(
+                "Maximum depth: " + statisticsVisitor.getMaxDepth()
+        );
     }
 }
